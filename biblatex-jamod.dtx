@@ -79,6 +79,13 @@
 本パッケージ自体の設定インターフェースは存在せず、現時点ではオプションはすべて\texttt{biblatex}側に渡されます。
 動作を改変したい場合適宜本パッケージのソースを直接編集する、もしくは \LaTeX 文章ファイルのプリアンブルに適宜記述してください
 
+\subsection{主な機能}
+\begin{itemize}
+  \item 日本語の著者名を自動で姓名順に変更
+  \item いくつかの\texttt{\textbackslash{bibstring}}を日本語へ翻訳
+  \item 日本語の文献の場合複数引用時の'and'を'・'へ修正
+\end{itemize}
+
 \section{インストール}
 インストール機能は現在実装されていません。
 \texttt{make}コマンドを実行すると\texttt{biblatex-jamod.sty}ファイルと\texttt{build/biblatex-jamod.pdf}が生成されます。あとは自由にしてください。
