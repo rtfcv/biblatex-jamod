@@ -1,0 +1,208 @@
+%\iffalse
+% biblatex-jamod.dtx generated using makedtx version 1.2 (c) Nicola Talbot
+% Command line args:
+%   -src "mybiblatex\.sty=>biblatex-jamod.sty"
+%   -doc "/dev/null"
+%   biblatex-jamod
+% Created on 2022/8/13 16:21
+%\fi
+
+
+%\iffalse
+% These iffalse block is to have them ignored when creating Document PDF
+%<*package>
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%</package>
+%\fi
+
+
+% \iffalse
+% Doc-Source file to use with LaTeX2e
+%% biblatex-jamod.dtx
+%% CopyrightA 2022 rtfcv.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is rtfcv.
+%
+% This work consists of the files biblatex-jamod.dtx and biblatex-jamod.ins
+% and the derived file biblatex-jamod.sty.
+% \fi
+
+
+% \iffalse
+% DOCUMENTATION PREAMBLE BASICALLY STARTS RIGHT ABOUT HERE
+%<*driver>
+\documentclass{ltjltxdoc}
+\usepackage{biblatex}
+\usepackage[margin=2cm]{geometry}
+
+\usepackage[numbered]{hypdoc}
+\EnableCrossrefs
+% \CodelineIndex
+\RecordChanges
+
+\title{\jobname}
+\author{rtfcv}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{はじめに}
+\texttt{biblatex}を日本語で使用するための設定をまとめたものです。\par
+\noindent\texttt{\textbackslash{}usepackage[style=...]\{biblatex-jamod\}}\par
+\noindent のように使用することができます。
+
+本パッケージ自体の設定インターフェースは存在せず、現時点ではオプションはすべて\texttt{biblatex}側に渡されます。
+動作を改変したい場合適宜本パッケージのソースを直接編集する、もしくは \LaTeX 文章ファイルのプリアンブルに適宜記述してください
+
+\section{インストール}
+インストール機能は現在実装されていません。
+\texttt{make}コマンドを実行すると\texttt{biblatex-jamod.sty}ファイルと\texttt{build/biblatex-jamod.pdf}が生成されます。あとは自由にしてください。
+
+\texttt{make all}を実行することで\texttt{README.*}を含む全てのファイルを生成することが出来ます。
+\texttt{make README.(pdf\textbar{}rst)}でこれらを個別に生成することも可能です。
+
+% BELOW IS ACTUALL IMPLEMENTATION
+\DocInput{biblatex-jamod.dtx}
+
+\PrintChanges
+% \PrintIndex
+\end{document}
+%</driver>
+%\fi
+
+
+%\StopEventually{}
+
+
+%\section{処理}
+%ここでは以下のファイルの内容を取りあつかう
+%<*biblatex-jamod.sty>
+
+%\subsection{依存関係}
+%    \iffalse Number of spaces DO seem to matter for dtx/macrocode here by the way. \fi
+%    \begin{macrocode} 
+\RequirePackageWithOptions{biblatex}[2022/01/01]
+%    \end{macrocode}
+
+%\subsection{\texttt{japanese}を\texttt{english}へmapする}
+%\texttt{japanese} を \texttt{english}の\texttt{dialect}として定義する。
+%これは\texttt{biblatex}が\texttt{japanese}を認識しない問題のためのワークアラウンドで将来は必要なくなるかもしれない。
+%    \begin{macrocode}
+\DeclareLanguageMapping{japanese}{english}
+%    \end{macrocode}
+
+%\subsection{}
+%\subsubsection{add language field as preprocessing}
+%add language field with value japanese
+%to every entry with names written using japanese characters.
+%    \begin{macrocode}
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=author, match=\regexp{[一-龥ぁ-んァ-ン]+}, final]
+      \step[fieldset=language, fieldvalue={japanese}]
+    }
+  }
+}
+%    \end{macrocode}
+
+%\subsubsection{add language field as preprocessing}
+%Here we fix expressions for multiple authors.
+%    \begin{macrocode}
+\newbibmacro*{finalnamedelim:{japanese}}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace{・}
+}
+\renewcommand*{\finalnamedelim}{%
+  \iflistundef{language}
+  {
+    \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+    \addspace\bibstring{and}\space
+  }{
+    \usebibmacro*{finalnamedelim:\strlist{language}}
+  }
+}
+%    \end{macrocode}
+
+%\subsection{Fix/Translate some other expressions}
+%Here we fix some bibliography expressions to japanese.
+
+%\paragraph{Fix `retrieved at' for japanese.}
+%    \begin{macrocode}
+\DeclareFieldFormat{urldate}{#1\bibstring{urlseen}}
+\DefineBibliographyStrings{japanese}{urlseen={閲覧},}
+%    \end{macrocode}
+
+%\paragraph{References を和訳。}
+%    \begin{macrocode}
+\DefineBibliographyStrings{japanese}{references={参考文献},}
+%    \end{macrocode}
+
+%\paragraph{Remove 'In:' from bibliography.}
+%    \begin{macrocode}
+\DefineBibliographyStrings{japanese}{in={ },}
+\renewcommand{\intitlepunct}{ }
+%    \end{macrocode}
+% 
+%\paragraph{Silence language field without deleting.}
+%    \begin{macrocode}
+\DeclareListFormat{language}{}
+%    \end{macrocode}
+
+%\subsection{日本語の姓名の反転を修正}
+%\texttt{{\textbackslash}authoreval} を散らかしているのは後に修正します。
+%    \begin{macrocode}
+\ExplSyntaxOn
+\newcommand{\authoreval}[1]{}
+\DeclareNameFormat{mydefault}{
+  % author and name combined
+  \edef\mystr{{\namepartfamily\namepartgiven}}
+
+  % define \authoreval{#1} which match #1 for predefined regex and do stuffs
+  \renewcommand{\authoreval}[1]{
+    \regex_match:nnTF{[一-龥ぁ-ん]+}{#1}{
+      \usebibmacro{name:given-family}{\namepartgiven}{\namepartfamily}{\namepartprefix}{\namepartsuffix}
+    }{
+      \usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}
+    }
+  }
+
+  % expand \authoreval after \namepartfamily
+  \expandafter\authoreval\mystr
+  \usebibmacro{name:andothers}
+}
+\ExplSyntaxOff
+\DeclareNameAlias{author}{mydefault}
+%    \end{macrocode}
+
+
+%\subsection{}
+%</biblatex-jamod.sty>
+%の内容は以上となります。
+%\Finale
+\endinput
