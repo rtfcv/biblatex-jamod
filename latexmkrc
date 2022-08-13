@@ -4,7 +4,7 @@ $out_dir="build";
 $my_interaction_mode="nonstopmode";
 $my_synctex_mode = "-1";
 
-$my_latex_args = "-synctex=$my_synctex_mode -file-line-error -halt-on-error -interaction=$my_interaction_mode";
+$my_latex_args = "-synctex=$my_synctex_mode -file-line-error -halt-on-error -interaction=$my_interaction_mode -recorder";
 
 $xelatex  = "xelatex  $my_latex_args %O %S";
 $lualatex = "lualatex $my_latex_args %O %S";
