@@ -142,9 +142,9 @@
 %Here we fix expressions for multiple authors.
 %    \begin{macrocode}
 \newbibmacro*{finalnamedelim:{japanese}}{%
-  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
   \addspace{・}
 }
+\renewcommand*{\multinamedelim}{\iflistundef{language}{, }{、}}
 \renewcommand*{\finalnamedelim}{%
   \iflistundef{language}
   {
