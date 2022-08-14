@@ -144,7 +144,8 @@
 \newbibmacro*{finalnamedelim:{japanese}}{%
   \addspace{・}
 }
-\renewcommand*{\multinamedelim}{\iflistundef{language}{, }{、}}
+\let\orig@multinamedelim=\multinamedelim
+\renewcommand*{\multinamedelim}{\iflistundef{language}{\orig@multinamedelim}{、}}
 \renewcommand*{\finalnamedelim}{%
   \iflistundef{language}
   {
