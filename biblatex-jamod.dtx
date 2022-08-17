@@ -86,9 +86,14 @@
   \item 日本語の文献の場合複数引用時の'and'を'・'へ修正
 \end{itemize}
 
-\section{インストール}
-インストール機能は現在実装されていません。
-\texttt{make}コマンドを実行すると\texttt{biblatex-jamod.sty}ファイルと\texttt{build/biblatex-jamod.pdf}が生成されます。あとは自由にしてください。
+\section{ビルド・インストール}
+\subsection{\texttt{make}が利用可能な場合}
+\texttt{make}コマンドを実行すると\texttt{biblatex-jamod.sty}ファイルと\texttt{build/biblatex-jamod.pdf}が生成されます。
+
+
+\texttt{make install}を実行することで\texttt{TEXMFHOME}以下へインストールが行なわれます。\texttt{PREFIX}環境変数を渡すことで
+インストール先を変更することができます。
+
 
 \texttt{make all}を実行することで\texttt{README.*}を含む全てのファイルを生成することが出来ます。
 \texttt{make README.(pdf\textbar{}rst)}でこれらを個別に生成することも可能です。
