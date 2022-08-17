@@ -32,8 +32,8 @@
 
 % \iffalse
 % Doc-Source file to use with LaTeX2e
-%% biblatex-jamod.dtx
-%% CopyrightA 2022 rtfcv.
+% biblatex-jamod.dtx
+% CopyrightA 2022 rtfcv.
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -129,9 +129,8 @@
 %    \end{macrocode}
 
 %\subsection{}
-%\subsubsection{add language field as preprocessing}
-%add language field with value japanese
-%to every entry with names written using japanese characters.
+%\subsubsection{日本語の著者名を持つ文献で\texttt{language}フィールドの値を\texttt{japanese}に変更}
+%後の処理で利用するために日本語で書かれたエントリーに関して\texttt{language}フィールドの値を\texttt{japanese}にします。
 %    \begin{macrocode}
 \DeclareSourcemap{
   \maps[datatype=bibtex]{
@@ -143,7 +142,7 @@
 }
 %    \end{macrocode}
 
-%\subsubsection{add language field as preprocessing}
+%\subsubsection{複数著者の表現を修正}
 %Here we fix expressions for multiple authors.
 %    \begin{macrocode}
 \newbibmacro*{finalnamedelim:{japanese}}{%
@@ -162,42 +161,52 @@
 }
 %    \end{macrocode}
 
-%\subsection{Fix/Translate some other expressions}
-%Here we fix some bibliography expressions to japanese.
+%\subsubsection{日本語書籍の強調を斜体から太字へ}
+% 以下のマクロを実装する。
+% \DescribeMacro{\JamodEmphHack}
+%日本語の書籍の場合書体などの強調部を斜体ではなくゴシックになるようにする。
+%    \begin{macrocode}
+\newcommand{\JamodEmphHack}{
+\newcommand{\myemph}[1]{\iflistundef{language}{\emph{##1}}{\textgt{##1}}}
+\renewrobustcmd*{\mkbibemph}{\myemph}
+\protected\long\def\blx@imc@mkbibemph##1{\myemph{##1}\blx@imc@setpunctfont\myemph}
+}
+%    \end{macrocode}
 
-%\paragraph{Fix `retrieved at' for japanese.}
+%\subsection{他の部分の表現を翻訳・修正}
+
+%\paragraph{'{retrieved at}'の和訳}
 %    \begin{macrocode}
 \DeclareFieldFormat{urldate}{#1\bibstring{urlseen}}
 \DefineBibliographyStrings{japanese}{urlseen={閲覧},}
 %    \end{macrocode}
 
-%\paragraph{References を和訳。}
+%\paragraph{'{References}'の和訳}
 %    \begin{macrocode}
 \DefineBibliographyStrings{japanese}{references={参考文献},}
 %    \end{macrocode}
 
-%\paragraph{Remove 'In:' from bibliography.}
+%\paragraph{'In:' を非表示}
 %    \begin{macrocode}
 \DefineBibliographyStrings{japanese}{in={ },}
 \renewcommand{\intitlepunct}{ }
 %    \end{macrocode}
 % 
-%\paragraph{Silence language field without deleting.}
+%\paragraph{\texttt{language}フィールドを消さずに見えないようにする。}
 %    \begin{macrocode}
 \DeclareListFormat{language}{}
 %    \end{macrocode}
 
 %\subsection{日本語の姓名の反転を修正}
-%\texttt{{\textbackslash}authoreval} を散らかしているのは後に修正します。
 %    \begin{macrocode}
 \ExplSyntaxOn
-\newcommand{\authoreval}[1]{}
+\newcommand{\BiblatexJamod@authoreval}[1]{}
 \DeclareNameFormat{mydefault}{
   % author and name combined
   \edef\mystr{{\namepartfamily\namepartgiven}}
 
-  % define \authoreval{#1} which match #1 for predefined regex and do stuffs
-  \renewcommand{\authoreval}[1]{
+  % define \BiblatexJamod@authoreval{#1} which match #1 for predefined regex and do stuffs
+  \renewcommand{\BiblatexJamod@authoreval}[1]{
     \regex_match:nnTF{[一-龥ぁ-ん]+}{#1}{
       \usebibmacro{name:given-family}{\namepartgiven}{\namepartfamily}{\namepartprefix}{\namepartsuffix}
     }{
@@ -206,7 +215,7 @@
   }
 
   % expand \authoreval after \namepartfamily
-  \expandafter\authoreval\mystr
+  \expandafter\BiblatexJamod@authoreval\mystr
   \usebibmacro{name:andothers}
 }
 \ExplSyntaxOff
