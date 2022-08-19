@@ -20,6 +20,24 @@ LaTeX文章ファイルのプリアンブルに適宜記述してください
 
 -  日本語の文献の場合複数引用時の’and’を’・’へ修正
 
+要求
+----
+
+:math:`\mathrm{up}\mathrm{L}^{\mathrm{A}}\mathrm{T}_{\mbox{E}}\mathrm{X}`\ もしくは
+:math:`\mathrm{lua}\mathrm{L}^{\mathrm{A}}\mathrm{T}_{\mbox{E}}\mathrm{X}`\ が必要です。
+
+他の依存関係は以下があれば大丈夫だと思います。
+
+-  expl3
+
+-  biblatex
+
+無くてもなんとかなりますが、以下があればよりビルド・インストールの実行が容易です。
+
+-  latexmk
+
+-  make
+
 ビルド・インストール
 ====================
 

@@ -57,9 +57,9 @@
 %<*driver>
 \documentclass{ltjltxdoc}
 \usepackage{biblatex}
-\usepackage[margin=2cm]{geometry}
-
+\usepackage[margin=20truemm, left=40truemm, bottom=25truemm]{geometry}
 \usepackage[numbered]{hypdoc}
+\usepackage{etoolbox}
 \EnableCrossrefs
 % \CodelineIndex
 \RecordChanges
@@ -84,6 +84,23 @@
   \item 日本語の著者名を自動で姓名順に変更
   \item いくつかの\texttt{\textbackslash{bibstring}}を日本語へ翻訳
   \item 日本語の文献の場合複数引用時の'and'を'・'へ修正
+\end{itemize}
+
+\subsection{要求}
+\(\mathrm{up}\mathrm{L}^{\mathrm{A}}\mathrm{T}_{\mbox{E}}\mathrm{X}\)もしくは
+\(\mathrm{lua}\mathrm{L}^{\mathrm{A}}\mathrm{T}_{\mbox{E}}\mathrm{X}\)が必要です。
+
+他の依存関係は以下があれば大丈夫だと思います。
+\begin{itemize}
+  \item expl3
+  \item biblatex
+\end{itemize}
+
+無くてもなんとかなりますが、以下があればよりビルド・インストールの実行が容易です。
+
+\begin{itemize}
+  \item latexmk
+  \item make
 \end{itemize}
 
 \section{ビルド・インストール}
@@ -130,7 +147,7 @@
 
 %\subsection{}
 %\subsubsection{日本語の著者名を持つ文献で\texttt{language}フィールドの値を\texttt{japanese}に変更}
-%後の処理で利用するために日本語で書かれたエントリーに関して\texttt{language}フィールドの値を\texttt{japanese}にします。
+%後の処理で利用するために日本語で書かれたエントリーに関して\texttt{language}フィールドの値を\texttt{japanese}にします。 \label{doc:languagefield}
 %    \begin{macrocode}
 \DeclareSourcemap{
   \maps[datatype=bibtex]{
@@ -143,7 +160,10 @@
 %    \end{macrocode}
 
 %\subsubsection{複数著者の表現を修正}
-%Here we fix expressions for multiple authors.
+% \ref{doc:languagefield}で\texttt{language}フィールドに\texttt{japanese}がセットされたエントリーについては
+% 複数著者の際の表現をA, B, ... , and ZからA、B、... Y・Zに変更します。
+% 
+% \texttt{language}フィールドのなかみをきちんとチェックできてない部分があるので修正が必要です。
 %    \begin{macrocode}
 \newbibmacro*{finalnamedelim:{japanese}}{%
   \addspace{・}
@@ -162,7 +182,8 @@
 %    \end{macrocode}
 
 %\subsubsection{日本語書籍の強調を斜体から太字へ}
-% 以下のマクロを実装する。
+% 以下のマクロを実装する。\par
+%
 % \DescribeMacro{\JamodEmphHack}
 %日本語の書籍の場合書体などの強調部を斜体ではなくゴシックになるようにする。
 %    \begin{macrocode}
